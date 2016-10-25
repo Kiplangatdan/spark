@@ -1,0 +1,93 @@
+<style type="text/css">
+.pos{
+background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ),url(img/login.jpg) center;
+background-size: cover;
+filter: gray;
+filter: grayscale(1);
+-webkit-filter: grayscale(0.1);
+}
+.center-align{margin: auto;}
+.spinner svg {
+    width: 70px;
+    height: 70px;
+    stroke: #F44336;
+    fill: #a58110;
+}
+</style>
+<ion-view view-title="Stock Taking">
+    <ion-content class="pos" ng-class="{expanded:isExpanded}" overflow-scroll="true">
+        <div>
+
+        <div class="card">
+            <center><label>{{name}}</label></center>
+            <div class="item">
+                <button class="button button-block button-positive" ng-click="vm.scan()">
+                    <i class="icon ion-qr-scanner"></i>
+                    Scan Product
+                </button>
+            </div>
+        </div>
+
+        <div class="card">
+
+                <div style=" margin:10px 18px; border-bottom:1px #ff9300 solid; color:#000; overflow:hidden; padding:0px 0px; ">
+                    <center> <i class="icon ion-bag"></i><b> Product Details</b> <i class="icon ion-bag"></i></center>
+                </div>
+            <div ng-show="showspiner" style=" margin:5% auto;  width:80px; padding:5px; height:370px; border-radius:15px;">
+                <ion-spinner icon="bubbles"></ion-spinner>
+            </div>
+
+            <form ng-show="!showspiner"  id="pos" name="pos_form" role="form" novalidate>
+
+                <div class="col-80"style="background:#fff; margin:5% auto 3% auto; height:auto; border-radius:3px;">
+                    <div class="list col-80" style="margin:auto; ">
+
+                        <label class="item item-input item-floating-label input-calm">
+                            <span class="input-label">Product Code</span>
+                            <input type="text" name="code" ng-model="pos.code" placeholder="Product Code" ng-pattern="/^[0-9]{1,7}$/" required>
+                                <div
+                                    class="msg-block"
+                                    ng-if="pos_form.code.$touched"
+                                    ng-messages="pos_form.code.$error"
+                                    style="color:maroon; display: inline-block;">
+                                <div ng-message="required" ng-if="pos_form.code.$error.required">Product Code is amust!</div>
+                                <div ng-message="pattern" ng-if="pos_form.code.$error.pattern">Digits only required</div>
+                            </div>
+                        </label>
+
+                        <label class="item item-input item-floating-label input-calm">
+                            <span class="input-label">Product Name</span>
+                            <input ng-if="searched_product.name" type="text" name="name" ng-model="searched_product.name" placeholder="Product Name">
+                            <input ng-if="!searched_product" type="text" name="name" ng-model="pos.name" placeholder="Product Name" style="font-size: small;">
+                        </label>
+                        <label class="item item-input item-floating-label input-calm">
+                            <span class="input-label">Product Category</span>
+                            <input ng-if="searched_product.category" type="text" name="category" ng-model="searched_product.category.name" placeholder="Category">
+                            <input ng-if="!searched_product" type="text" name="category" ng-model="pos.category" placeholder="Category">
+                        </label>
+                        <label class="item item-input item-floating-label input-calm">
+                            <span class="input-label">Quantity</span>
+                            <input type="text" name="quantity" ng-model="pos.quantity" placeholder="Stock Quantity" ng-pattern="/^[0-9]{1,7}$/" required>
+                            <div
+                                    class="msg-block"
+                                    ng-if="pos_form.quantity.$touched"
+                                    ng-messages="pos_form.quantity.$error"
+                                    style="color:maroon; display: inline-block;">
+                                <div ng-message="required" ng-if="pos_form.quantity.$error.required">Enter Quantity</div>
+                                <div ng-message="pattern" ng-if="pos_form.quantity.$error.pattern">Digits only required!</div>
+                            </div>
+                        </label>
+
+                </div>
+                <div class="list col-80" style="margin:auto;float: inherit; ">
+
+                    <button ng-click ="savepos(searched_product.id, pos.quantity)" class="button button-full button-assertive ink" ng-disabled="pos_form.$invalid">Proceed</button>
+                    </div>
+
+            </form>
+
+
+        </div>
+        </div>
+    </ion-content>
+</ion-view>

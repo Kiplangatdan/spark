@@ -1,0 +1,41 @@
+<style>
+    .spinner svg {
+        width: 70px;
+        height: 70px;
+        stroke: #F44336;
+        fill: #a58110;
+    }
+</style>
+
+<ion-view view-title="Gallery">
+    <ion-content overflow-scroll="true">
+        <div ng-show="showspiner" style="margin:5% auto;  width:80px; padding:5px;  border-radius:15px;">
+            <ion-spinner icon="dots"></ion-spinner>
+        </div>
+        <div style="width: 100%; height: 65%; border-bottom:1px #ff9300 solid; color:#000; overflow:hidden; padding:0px 0px;">
+        <img ng-src="{{pathForImage(image)}}" style="width: 100%; height: 100%;">
+        </div>
+        <form name="gallery">
+            <div class="col-83"style="background:#fff; margin:5% auto 3% auto; height:auto; border-radius:3px;">
+                <div class="list col-82" style="margin:auto; ">
+                    <p style="color:#ababab; margin-left: 5%;"> Select Image Category:</p>
+                    <center><select style="width: 92%;" class="form-control" ng-model="category" name="category" required/>
+                    <option value="Posm placement" selected>POSM Placement</option>
+                    <option value="Competitor">Competitor</option>
+                    <option value="Competitor">Other</option>
+                    </select></center>
+                    <br/>
+                    <label class="item item-input">
+                    <textarea placeholder="Enter Description here.." ng-model="description" name="description" required=""></textarea>
+                    </label>
+                </div>
+            </div>
+            <br/>
+
+        <div class="button-bar">
+           <button class="button button-assertive ink icon-left ion-camera" ng-click="loadImage()">Take Photo</button>
+            <button class="button button-assertive ink icon-left ion-upload" ng-click="uploadImage(description, category)" ng-disabled="image === null">Upload</button>
+        </div>
+        </form>
+    </ion-content>
+</ion-view>

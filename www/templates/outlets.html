@@ -1,0 +1,37 @@
+<style>
+    .btn{
+        font-size: 100%;
+    }
+    .img{
+        width: 8%;
+        height: 8%;
+    }
+</style>
+<ion-view view-title="Assigned Outlets">
+    <ion-content class="outlets" overflow-scroll="true">
+        <div class="card">
+            <div class="item item-text-wrap">
+        <div class="item" ng-repeat="planner in planners" style="border-bottom: 1px solid#ccc; font-size: small; font-family: 'Arial Unicode MS';">
+            {{planner.description}}
+        </div>
+            </div>
+
+
+        <div class="card">
+        <label class="item item-input" style="border-bottom: 1px solid#ccc">
+            <i class="icon ion-search placeholder-icon"></i>
+            <input type="search" placeholder="Search Outlets" ng-model="search">
+        </label>
+        </div>
+        </div>
+        <div class="height">
+
+                <div class="item" collection-repeat="outlet in outlets | filter:search track by $index">
+                    <button class="btn button-full button-assertive ink" ng-click="out(outlet.id, outlet.name, outlet.lat)">
+                        <i class="icon ion-android-arrow-forward" ></i> <img class="img" src="img/icon.png">{{outlet.name}}
+                    </button>
+                </div>
+
+        </div>
+    </ion-content>
+</ion-view>
