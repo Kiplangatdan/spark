@@ -2,7 +2,6 @@
 'use strict';
 angular.module('starter.controllers', ['ionic', 'ngCordova'])
 
-
 .controller('AppCtrl', function($rootScope, $scope, $http, $ionicModal, $ionicPopover, $timeout, $state) {
     //$scope.showspiner = false;
     // Form data for the login modal
@@ -100,8 +99,8 @@ angular.module('starter.controllers', ['ionic', 'ngCordova'])
         $scope.loginData = {};
         $scope.loginError = true;
         $scope.loginErrorText;
-    $scope.loginData.username = '@sparkcommunication.co.ke';
-    //$scope.loginData.password = '1234';
+    $scope.loginData.username = 'admin@client.com';
+    $scope.loginData.password = '1234';
     $scope.$watch('loginData.username + loginData.password', function(newValue,oldValue) {
         if(newValue){
             $scope.loginErrorText;
@@ -201,11 +200,11 @@ angular.module('starter.controllers', ['ionic', 'ngCordova'])
 
     }, function(error){
 
-        $ionicPopup.alert({
-         title: 'No Internet Connection',
-         template: 'Sorry, your current location could not be determined. Please try later.',
-         okText:'Retry',
-         })
+        // $ionicPopup.alert({
+        //  title: 'No Internet Connection',
+        //  template: 'Sorry, your current location could not be determined. Please try later.',
+        //  okText:'Retry',
+        //  })
     });
 
 
@@ -272,7 +271,14 @@ angular.module('starter.controllers', ['ionic', 'ngCordova'])
     // Activate ink for controller
     ionicMaterialInk.displayEffect();
 })
+    
+.controller('GridCtrl', function ($http, $state, $rootScope, $scope, $stateParams, $timeout, $ionicPopup, $cordovaToast, ionicMaterialInk, ionicMaterialMotion) {
 
+    $scope.out = function () {
+        $state.go('app.pos');
+
+    }
+})
 .controller('InventoryCtrl', function($http, $rootScope, $scope, $stateParams, $timeout, $ionicPopup, $cordovaToast, ionicMaterialInk, ionicMaterialMotion) {
     
     $scope.user = $rootScope.currentUser;
@@ -504,7 +510,8 @@ $scope.user = $rootScope.currentUser;
    // console.log("GPS coords " +lng);
     //console.log("Outlet Coords" + lats);
 
-    if ((lat == lats)){// disable the GPS Coordinates
+    /* Disable GPS Coords during testing
+    if ((lat == lats)){
        // console.log("In the right place");
     }else{
         var confirmPopup = $ionicPopup.alert({
@@ -517,7 +524,7 @@ $scope.user = $rootScope.currentUser;
                $state.go('app.outlets');
             }
         });
-    }
+    }*/
     $scope.faults = [];
     $scope.success =false;
 
@@ -737,56 +744,10 @@ $scope.outlets = [];
 
     });
 
-/*
 
-$scope.outletss = [{
-    "outlet_id": 1,
-    "outletName":'Nakumatt Ukay',
-    "lat":-1.29,
-    "visited":0,
-},
-    {
-     "outlet_id":2,
-     "outletName":'Tuskys Westlands',
-        "lat":-1.29,
-      "visited":1,
-    },
-    {
-        "outlet_id": 3,
-        "outletName":'Chandaria Umoja',
-        "lat":-1.28,
-        "visited":0,
-    },
-    {
-        "outlet_id": 4,
-        "outletName":'Khetias Langata',
-        "lat":-1.28,
-        "visited":1,
-    },{
-        "outlet_id": 10,
-        "outletName":'Total Rubia',
-        "lat":-1.28,
-        "visited":1,
-    }, {
-        "outlet_id": 11,
-        "outletName":'Ukwala Gikomba',
-        "lat":-1.28,
-        "visited":1,
-    }, {
-        "outlet_id": 12,
-        "outletName":'Tuskys Kisumu',
-        "lat":-1.29,
-        "visited":1,
-    }, {
-        "outlet_id": 14,
-        "outletName":'Uchumi Valley Arcade',
-        "lat":-1.29,
-        "visited":1,
-    }];
-    */
 
     $scope.out = function (id, name, lat) {
-        $state.go('app.pos', {"outlet_id":id, "name":name, "lat":lat});
+        $state.go('app.grid', {"outlet_id":id, "name":name, "lat":lat});
 
     }
 
@@ -948,9 +909,6 @@ $scope.outletss = [{
 
             confirmPopup.then(function(res) {
                 if(res) {
-
-
-
 
 
                 } else {

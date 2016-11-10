@@ -193,6 +193,19 @@ angular.module('starter', ['ionic',  'ngCordova', 'starter.controllers', 'starte
             }
         })
 
+     .state('app.grid', {
+        url: '/grid',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/grid_menu.html',
+                controller: 'GridCtrl'
+            },
+            'fabContent': {
+                template: ''
+            }
+        }
+    })
+
     .state('app.home', {
         url: '/home',
         views: {
