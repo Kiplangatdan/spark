@@ -1,0 +1,71 @@
+<style>
+.fhm_container {
+  position:absolute;
+  top:0;
+  right:0;
+  left:0;
+  bottom:0;
+}
+
+.fhm_row {
+  /* position: absolute; */
+  height: 33.3%;
+  left:0;
+  right:0;
+  background-color:#FF0000;
+  clear:both;
+}
+.grid_item {
+  height: 100%;
+  width:49.95%;
+  background-color: #ff9300;
+  border: 1px solid #FFFFFF;
+  float:left;
+  text-align: center;
+}
+    .img{
+        width: 70%;
+        height: 70%;
+    }
+    .center{
+        text-align: center;
+    }
+</style>
+<ion-view view-title="Outlet Activities">
+    <ion-content class="outlets" overflow-scroll="true" style="padding-top: 1%">
+      <div class="fhm_container">
+        <div class="fhm_row">
+          <a ng-click="out()"> <div class="grid_item">
+            <div class="center"><img class="img" src="img/icon.png">
+              <p>Stock Out</p></div>
+          </div></a>
+
+          <div class="grid_item">
+            <div class="center"><img class="img" src="img/order.png">
+              <p>Order Placement</p></div>
+          </div>
+        </div>
+        <div class="fhm_row">
+          <div class="grid_item">
+               <div class="center"><img class="img" src="img/competitor.png">
+              <p>Competitor Activities</p></div>
+          </div>
+          <div class="grid_item">
+            <div class="center"><img class="img" src="img/price.png">
+              <p>Pricing</p></div>
+          </div>
+        </div>
+          <div class="fhm_row">
+          <div class="grid_item">
+            <div class="center" ui-sref="app.inventory"><img class="img" src="img/inventory.png">
+              <p>Outlet Inventory</p></div>
+          </div>
+          <div class="grid_item">
+            <div class="center" ui-sref="app.outlets"><img class="img" src="img/exit.png">
+              <p>Exit Outlet</p></div>
+          </div>
+        </div>
+        </div>
+      </div>
+    </ion-content>
+</ion-view>
