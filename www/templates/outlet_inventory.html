@@ -36,8 +36,8 @@
                                 <td>{{inve.product.name}}</td>
                             </tr>
                             <tr>
-                                <td class="title">Price:</td>
-                                <td>{{inve.sale}}</td>
+                                <td class="title">Stock:</td>
+                                <td>{{inve.sale + ' Remaining'}}</td>
                             </tr>
                             <tr>
                                 <td class="title">Outlet:</td>
@@ -55,7 +55,7 @@
         <br/> <br/>
 
         <div class="hometabs animate-fade-slide-in" style="background: #ffffff;">
-            <a href="" ui-sref="app.grid" >Back</a>
+            <a href="" ui-sref="app.pos" >Back</a>
         </div>
     </ion-content>
 </ion-view>

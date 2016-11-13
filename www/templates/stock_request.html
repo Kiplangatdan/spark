@@ -1,83 +1,43 @@
 <style type="text/css">
-    .pos{
-        background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ),url(img/login.jpg) center;
-        background-size: cover;
-        filter: gray;
-        filter: grayscale(1);
-        -webkit-filter: grayscale(0.1);
-    }
-    .center-align{margin: auto;}
-    .spinner svg {
-        width: 70px;
-        height: 70px;
-        stroke: #F44336;
-        fill: #a58110;
-    }
+
 </style>
-<ion-view view-title="Request Stock">
+<ion-view view-title="Order Placement:{{name}}">
     <ion-content class="pos" ng-class="{expanded:isExpanded}" overflow-scroll="true">
         <div class="content has-header">
-            <div class="card">
-                <div class="item">
-                    <button class="button button-full button-assertive ink">
-                        <i class="icon ion-android-arrow-forward"></i> Outlet: {{name}}<i class="icon ion-android-arrow-back"></i>
-                    </button>
-                </div>
-            </div>
+                <b><div style="color:#ababab; margin-left: 5%; padding-top:0px; text-align: center; "> Product Range:</div>
+                        <center><select style="width: 92%;" class="form-control" ng-model="category" name="status" required/>
+                        <option value="">All Products</option>
+                        <option value="Beverages" selected>Beverages</option>
+                        <option value="Indigo">Indigo</option>
+                        <option value="Biscuits">Biscuits</option>
+                        <option value="Pepsico">Pepsico Brands</option>
+                        <option value="Personal">Personal Care</option>
+                        </select></center></b>
+            <br/>
+                <table class="table table-bordered">
+                            <thead>
+                              <tr>
+                                <th>Check</th>
+                                <th>Sku</th>
+                                <th>Brand Name</th>
+                                <th>Category</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr ng-repeat="product in products | orderBy:'created_at' |filter:category">
+                                <td><input type="checkbox" name="" value="" ng-model="checked[product.id]" ng-change="check(product.id, checked[product.id])"></td>
+                                <td>{{product.sku_code}}</td>
+                                <td>{{product.name}}</td>
+                                <td>{{product.category.name}}</td>
+                              </tr>
+                            </tbody>
+                          </table>
 
-            <div class="card">
-
-                <div style=" margin:10px 18px; border-bottom:1px #ff9300 solid; color:#000; overflow:hidden; padding:0px 0px; ">
-                    <center><b>Request Stock</b></center>
-                </div>
-                <div ng-show="showspiner" style=" margin:5% auto;  width:80px; padding:5px; height:370px; border-radius:15px;">
-                    <ion-spinner icon="bubbles"></ion-spinner>
-                </div>
-
-                <form ng-show="!showspiner"  id="pos" name="stock_form" role="form" novalidate>
-
-                    <div class="col-80"style="background:#fff; margin:5% auto 3% auto; height:auto; border-radius:3px;">
-                        <div class="list col-80" style="margin:auto; ">
-
-                            <label class="item item-input item-floating-label input-calm">
-                                <span class="input-label">Product Code</span>
-                                <input type="text" name="code" ng-model="pos.code" placeholder="Product Code" ng-pattern="/^[0-9]{1,7}$/" required>
-                                <div
-                                        class="msg-block"
-                                        ng-if="pos_form.code.$touched"
-                                        ng-messages="pos_form.code.$error"
-                                        style="color:maroon; display: inline-block;">
-                                    <div ng-message="required" ng-if="pos_form.code.$error.required">Product Code is amust!</div>
-                                    <div ng-message="pattern" ng-if="pos_form.code.$error.pattern">Digits only required</div>
-                                </div>
-                            </label>
-
-                            <label class="item item-input item-floating-label input-calm">
-                                <span class="input-label">Product Name</span>
-                                <input ng-if="searched_product.name" type="text" name="name" ng-model="searched_product.name" placeholder="Product Name">
-                                <input ng-if="!searched_product" type="text" name="name" ng-model="pos.name" placeholder="Product Name" style="font-size: small;">
-                            </label>
-                            <label class="item item-input item-floating-label input-calm">
-                                <span class="input-label">Product Category</span>
-                                <input ng-if="searched_product.category" type="text" name="category" ng-model="searched_product.category.name" placeholder="Category">
-                                <input ng-if="!searched_product" type="text" name="category" ng-model="pos.category" placeholder="Category">
-                            </label>
-                            <label class="item item-input item-floating-label input-calm">
-                                <span class="input-label">Comments</span>
-                                <textarea placeholder="Enter any Comments" ng-model="pos.comments" name="comments"></textarea>
-
-                            </label>
-
-                        </div>
                         <div class="list col-80" style="margin:auto;float: inherit; ">
 
-                            <button ng-click ="request(pos.code, pos.comments)" class="button button-full button-assertive ink" ng-disabled="stock_form.$invalid">Request Stock</button>
                         </div>
                 </div>
-                </form>
-
 
             </div>
-        </div>
     </ion-content>
 </ion-view>

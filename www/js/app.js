@@ -101,7 +101,9 @@ angular.module('starter', ['ionic',  'ngCordova', 'starter.controllers', 'starte
                 'menuContent': {
                     templateUrl: 'templates/stock_request.html',
                     controller: 'Stock_requestCtrl'
-                },
+                },'fabContent':{
+                    template:'<button id="fab-profile" class="button button-fab button-fab-bottom-right button-energized-900"><i class="icon ion-plus"></i></button>'
+                }
             }
         })
 
@@ -194,11 +196,24 @@ angular.module('starter', ['ionic',  'ngCordova', 'starter.controllers', 'starte
         })
 
      .state('app.grid', {
-        url: '/grid',
+        url: '/grid/:outlet_id/:name/:lat',
         views: {
             'menuContent': {
                 templateUrl: 'templates/grid_menu.html',
                 controller: 'GridCtrl'
+            },
+            'fabContent': {
+                template: ''
+            }
+        }
+    })
+
+      .state('app.pricing', {
+        url: '/pricing/:outlet_id/:name/:lat',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/pricing.html',
+                controller: 'PricingCtrl'
             },
             'fabContent': {
                 template: ''

@@ -35,25 +35,26 @@
     <ion-content class="outlets" overflow-scroll="true" style="padding-top: 1%">
       <div class="fhm_container">
         <div class="fhm_row">
-          <a ng-click="out()"> <div class="grid_item">
+          <a ng-click="pos(outlet_id, name)"> <div class="grid_item">
             <div class="center"><img class="img" src="img/icon.png">
+              <br/>
               <p>Stock Out</p></div>
           </div></a>
 
-          <div class="grid_item">
+          <a ng-click="order(outlet_id, name)"><div class="grid_item">
             <div class="center"><img class="img" src="img/order.png">
               <p>Order Placement</p></div>
-          </div>
+          </div></a>
         </div>
         <div class="fhm_row">
-          <div class="grid_item">
+          <a ng-click="gallery(outlet_id, name)"><div class="grid_item">
                <div class="center"><img class="img" src="img/competitor.png">
               <p>Competitor Activities</p></div>
-          </div>
-          <div class="grid_item">
+          </div><a>
+          <a ng-click="pricing(outlet_id, name)"><div class="grid_item">
             <div class="center"><img class="img" src="img/price.png">
               <p>Pricing</p></div>
-          </div>
+          </div></a>
         </div>
           <div class="fhm_row">
           <div class="grid_item">
