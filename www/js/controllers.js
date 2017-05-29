@@ -285,20 +285,20 @@ $scope.user = $rootScope.currentUser;
 
 
 
-    if ((lat == lats)){
-       // console.log("In the right place");
-    }else{
-        var confirmPopup = $ionicPopup.alert({
-           title: 'Wrong Outlet',
-           template: 'It seems you are in the wrong outlet. Check your location and try again',
-           okText:'Ok',
-       });
-        confirmPopup.then(function (response) {
-            if(response){
-               $state.go('app.outlets');
-            }
-        });
-    }
+    // if ((lat == lats)){
+    //    // console.log("In the right place");
+    // }else{
+    //     var confirmPopup = $ionicPopup.alert({
+    //        title: 'Wrong Outlet',
+    //        template: 'It seems you are in the wrong outlet. Check your location and try again',
+    //        okText:'Ok',
+    //    });
+    //     confirmPopup.then(function (response) {
+    //         if(response){
+    //            $state.go('app.outlets');
+    //         }
+    //     });
+    // }
 
     var outlet_id = $stateParams.outlet_id;
     var name = $stateParams.name;
