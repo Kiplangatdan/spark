@@ -14,19 +14,19 @@ filter: grayscale(1);
     fill: #a58110;
 }
 </style>
-<ion-view view-title="Stock Taking">
+<ion-view view-title="Stock Taking: {{name}}">
     <ion-content class="pos" ng-class="{expanded:isExpanded}" overflow-scroll="true">
-        <div>
 
-        <div class="card">
+
+        <!--<div class="card">
             <center><label>{{name}}</label></center>
             <div class="item">
                 <button class="button button-block button-positive" ng-click="vm.scan()">
                     <i class="icon ion-qr-scanner"></i>
                     Scan Product
                 </button>
-            </div>
-        </div>
+            </div>-->
+
 
         <div class="card">
 
@@ -65,23 +65,23 @@ filter: grayscale(1);
                             <input ng-if="searched_product.category" type="text" name="category" ng-model="searched_product.category.name" placeholder="Category">
                             <input ng-if="!searched_product" type="text" name="category" ng-model="pos.category" placeholder="Category">
                         </label>
-                        <label class="item item-input item-floating-label input-calm">
-                            <span class="input-label">Quantity</span>
-                            <input type="text" name="quantity" ng-model="pos.quantity" placeholder="Stock Quantity" ng-pattern="/^[0-9]{1,7}$/" required>
-                            <div
-                                    class="msg-block"
-                                    ng-if="pos_form.quantity.$touched"
-                                    ng-messages="pos_form.quantity.$error"
-                                    style="color:maroon; display: inline-block;">
-                                <div ng-message="required" ng-if="pos_form.quantity.$error.required">Enter Quantity</div>
-                                <div ng-message="pattern" ng-if="pos_form.quantity.$error.pattern">Digits only required!</div>
-                            </div>
+
+                        <br/>
+                         <b><p style="color:#ababab; margin-left: 5%;"> Product Status:</p>
+                        <center><select style="width: 92%;" class="form-control" ng-model="status" name="status" required/>
+                        <option value="Critical" selected>Critical</option>
+                        <option value="Out of Stock">Out of Stock</option>
+                        <option value="Other">Other</option>
+                        </select></center></b>
+                        <br/>
+                        <label class="item item-input">
+                        <textarea placeholder="Enter your comments here.." ng-model="comments" name="comments" required=""></textarea>
                         </label>
 
                 </div>
                 <div class="list col-80" style="margin:auto;float: inherit; ">
 
-                    <button ng-click ="savepos(searched_product.id, pos.quantity)" class="button button-full button-assertive ink" ng-disabled="pos_form.$invalid">Proceed</button>
+                    <button ng-click ="savepos(searched_product.id, pos.quantity, status, comments)" class="button button-full button-assertive ink" ng-disabled="pos_form.$invalid">Proceed</button>
                     </div>
 
             </form>

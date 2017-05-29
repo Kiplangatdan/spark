@@ -15,7 +15,7 @@
                 on-refresh="doRefresh()">
         </ion-refresher>
         <ion-list>
-        <div collection-repeat="inve in inventory | orderBy: 'created_at':true">
+        <div collection-repeat="inve in inventory |filter:search track by $index">
 
             <div class=" card-item">
                 <div  class="card stable-bg white-card" style="background:white; color:#222;">
@@ -36,8 +36,8 @@
                                 <td>{{inve.product.name}}</td>
                             </tr>
                             <tr>
-                                <td class="title">Stock:</td>
-                                <td>{{inve.sale + ' Remaining'}}</td>
+                                <td class="title">Price:</td>
+                                <td>{{inve.sale}}</td>
                             </tr>
                             <tr>
                                 <td class="title">Outlet:</td>
@@ -55,7 +55,7 @@
         <br/> <br/>
 
         <div class="hometabs animate-fade-slide-in" style="background: #ffffff;">
-            <a href="" ui-sref="app.pos" >Back</a>
+            <a href="" ui-sref="app.grid" >Back</a>
         </div>
     </ion-content>
 </ion-view>

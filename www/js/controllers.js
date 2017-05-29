@@ -2,7 +2,6 @@
 'use strict';
 angular.module('starter.controllers', ['ionic', 'ngCordova'])
 
-
 .controller('AppCtrl', function($rootScope, $scope, $http, $ionicModal, $ionicPopover, $timeout, $state) {
     //$scope.showspiner = false;
     // Form data for the login modal
@@ -272,13 +271,70 @@ angular.module('starter.controllers', ['ionic', 'ngCordova'])
     // Activate ink for controller
     ionicMaterialInk.displayEffect();
 })
+    
+.controller('GridCtrl', function ($http, $state, $rootScope, $scope, $stateParams, $timeout, $ionicPopup, $filter, $cordovaToast, ionicMaterialInk, ionicMaterialMotion) {
+$scope.user = $rootScope.currentUser;
+    if(!$scope.user){
+        $state.go('app.login');
+    }
+    $scope.name = $stateParams.name;
+    var lat = $filter('limitTo')($scope.user.lat, 5, 0);
+    var lng = $filter('limitTo')($scope.user.lng, 5, 0);
 
+    var lats = $filter('limitTo')($stateParams.lat, 5, 0);
+
+
+
+    // if ((lat == lats)){
+    //    // console.log("In the right place");
+    // }else{
+    //     var confirmPopup = $ionicPopup.alert({
+    //        title: 'Wrong Outlet',
+    //        template: 'It seems you are in the wrong outlet. Check your location and try again',
+    //        okText:'Ok',
+    //    });
+    //     confirmPopup.then(function (response) {
+    //         if(response){
+    //            $state.go('app.outlets');
+    //         }
+    //     });
+    // }
+
+    var outlet_id = $stateParams.outlet_id;
+    var name = $stateParams.name;
+
+
+    $scope.outlet_id = outlet_id;
+    $scope.name = name;
+
+    //Stock out page
+    $scope.pos = function (outlet_id, name, lat) {
+        $state.go('app.pos', {"outlet_id":outlet_id, "name":name, "lat":lat});
+
+    }
+    //Order Placement page
+    $scope.order = function (id, name, lat) {
+        $state.go('app.request', {"outlet_id":outlet_id, "name":name, "lat":lat});
+
+    }
+    //Competitor activities
+    $scope.gallery = function (id, name, lat) {
+        $state.go('app.gallery', {"outlet_id":outlet_id, "name":name, "lat":lat});
+
+    }
+    //Pricing page
+     $scope.pricing = function (id, name, lat) {
+        $state.go('app.pricing', {"outlet_id":outlet_id, "name":name, "lat":lat});
+
+    }
+})
 .controller('InventoryCtrl', function($http, $rootScope, $scope, $stateParams, $timeout, $ionicPopup, $cordovaToast, ionicMaterialInk, ionicMaterialMotion) {
     
     $scope.user = $rootScope.currentUser;
     if(!$scope.user){
       $state.go('app.login');
     }
+    //$scope.search = 'Naivas';
     $scope.inventory = [];
     var userid = $scope.user.user_id;
     $http.get('http://sparkcommunication.websandbox.nl/api/allstock_salesperson/' + userid).success(function(data, status, headers, config) {
@@ -504,7 +560,8 @@ $scope.user = $rootScope.currentUser;
    // console.log("GPS coords " +lng);
     //console.log("Outlet Coords" + lats);
 
-    if ((lat == lats)){// disable the GPS Coordinates
+    /* Disable GPS Coords during testing
+    if ((lat == lats)){
        // console.log("In the right place");
     }else{
         var confirmPopup = $ionicPopup.alert({
@@ -517,7 +574,7 @@ $scope.user = $rootScope.currentUser;
                $state.go('app.outlets');
             }
         });
-    }
+    }*/
     $scope.faults = [];
     $scope.success =false;
 
@@ -525,19 +582,19 @@ $scope.user = $rootScope.currentUser;
     $scope.pos = {};
     var outlet_id = $stateParams.outlet_id;
     var name = $stateParams.name;
-   console.log('Pos page ' + outlet_id);
-    //console.log('Pos page ' + name);
-    $scope.savepos = function(id, quantity){
+    $scope.savepos = function(id, quantity, status, comments){
         $scope.showspiner = true;
-        $http.post('http://sparkcommunication.websandbox.nl/api/saleproduct/' +id,{
+        $http.post('http://sparkcommunication.websandbox.nl/api/addproductstockout/' +id,{
             'user_id': $rootScope.currentUser.user_id,
-            'quantity': quantity,
+            'status': status,
+            'comments': comments,
             'outlet_id':outlet_id,
+            'type':1
 
 
         }).success(function(data, status, headers, config) {
             var confirmPopup = $ionicPopup.confirm({
-                title: 'Stock Updated',
+                title: 'Stock Out',
                 template: 'Product stock updated Successfully. Do you want to request Stock?',
                 cancelText: 'No',
                 okText: 'Yes',
@@ -548,11 +605,110 @@ $scope.user = $rootScope.currentUser;
                    $state.go('app.request', {'outlet_id':outlet_id, 'name':name});
                 } else {
                     $scope.showspiner = false;
-                    //$state.go('app.gallery', {'outlet_id':outlet_id, 'name':name});
+                    $scope.pos.code = "";
+                    $scope.pos.name = "";
+                    $scope.pos.status = "";
+                    $scope.comments = "";
+                }
+            });
+
+            //console.log(data);
+
+        }).error(function(data, status) {
+            //$scope.errors = data.errors;
+            $scope.showspiner = false;
+        });
+    }
+
+    $scope.testfunc = function (code){
+        var code = code;
+        $http.get('http://sparkcommunication.websandbox.nl/api/pos_search_product/' +code)
+            .success(function(data, status, headers, config) {
+                $scope.searched_product = data.searched_product;
+                if(!$scope.searched_product){
+                    $scope.search_results = false;
+                    //$scope.pos.name = $scope.searched_product.name;
+                }else{
+                    $scope.search_results = true;
+                }
+
+            }).error(function(data, status) {
+            //$scope.errors = data.errors;
+        });
+    }
+    $scope.$watch('pos.code', function(newValue, oldValue) {
+        //$scope.testfunc(pos.code);
+        var code = $scope.pos.code;
+        $scope.testfunc(code);
+
+    });
+
+
+
+        var vm = this;
+        //$scope.test = 1234;
+        vm.scan = function(){
+            $ionicPlatform.ready(function() {
+                $cordovaBarcodeScanner
+                    .scan()
+                    .then(function(result) {
+                        // Success! Barcode data is here
+                        vm.scanResults = result.text;
+                        $scope.pos.code=1;
+
+                    }, function(error) {
+                        // An error occurred
+                        vm.scanResults = 'Error: ' + error;
+                    });
+            });
+        };
+
+        vm.scanResults = '';
+    })
+
+.controller('PricingCtrl', function($scope, $rootScope, $http, $filter, $state, $cordovaBarcodeScanner, $ionicPlatform, $ionicPopup, $stateParams, $timeout, ionicMaterialMotion, ionicMaterialInk) {
+$scope.user = $rootScope.currentUser;
+    if(!$scope.user){
+        $state.go('app.login');
+    }
+    $scope.name = $stateParams.name;
+
+    $scope.faults = [];
+    $scope.success =false;
+
+    //Post PoS Details
+    $scope.pos = {};
+    var outlet_id = $stateParams.outlet_id;
+    var name = $stateParams.name;
+   console.log('Pos page ' + outlet_id);
+    console.log('Pos page ' + name);
+    $scope.savepos = function(id, quantity){
+        $scope.showspiner = true;
+        $http.post('http://sparkcommunication.websandbox.nl/api/saleproduct/' +id,{
+            'user_id': $rootScope.currentUser.user_id,
+            'quantity': quantity,
+            'outlet_id':outlet_id,
+
+
+        }).success(function(data, status, headers, config) {
+            var confirmPopup = $ionicPopup.confirm({
+                title: 'Price Updated',
+                template: 'New price added. Add price for another product?',
+                cancelText: 'No',
+                okText: 'Yes',
+            });
+
+            confirmPopup.then(function(res) {
+                if(res) {
+                 $state.go('app.pricing', {'outlet_id':outlet_id, 'name':name});
+                    $scope.showspiner = false;
                     $scope.pos.code = "";
                     $scope.pos.name = "";
                     $scope.pos.category = "";
                     $scope.pos.quantity = "";
+                } else {
+                 $state.go('app.grid', {'outlet_id':outlet_id, 'name':name});
+
                 }
             });
 
@@ -611,95 +767,46 @@ $scope.user = $rootScope.currentUser;
     })
 
 .controller('Stock_requestCtrl', function($scope, $rootScope, $http, $filter, $state, $ionicPlatform, $ionicPopup, $stateParams, $timeout, ionicMaterialMotion, ionicMaterialInk) {
-        $scope.user = $rootScope.currentUser;
+   $scope.user = $rootScope.currentUser;
     $scope.faults = [];
     $scope.success = false;
 
-    var outlet_id = $state.params.outlet_id;
-    var outlet_name = $state.params.name;
-    $scope.name = outlet_name;
-    console.log('Stock Request Page ' + $state.params.outlet_id);
-    console.log('Stock Request Page ' + outlet_name );
-   if (outlet_id == ""){
-        var alert = $ionicPopup.alert({
-            title: 'Select Outlet',
-            template: 'You have to select an outlet first!!',
-            okText: 'Select Outlet',
-        });
-        alert.then(function(response){
-            if(response){
-                $state.go('app.outlets');
-            }else{
-                $state.go('app.home');
-            }
-        });
-    }else{
+    var outlet_id = $stateParams.outlet_id;
+    var name = $stateParams.name;
+
+    $scope.name = name;
+     $http.get('http://sparkcommunication.websandbox.nl/api/allproducts').success(function(data, status, headers, config) {
+        $scope.products = data.products;
+
+    }).error(function(data, status) {
 
 
+    });
 
-
-
-    $scope.name = outlet_name;
-    $scope.pos = {};
-    $scope.request = function(id, comments){
-        $scope.showspiner = true;
-        //$http.post('http://192.168.1.103:8012/spark/api/requestproduct/' +id, {
-        $http.post('http://sparkcommunication.websandbox.nl/api/requestproduct/' +id,{
+    $scope.check = function (id, status) {
+        if(status){
+            $http.post('http://sparkcommunication.websandbox.nl/api/addproductstockout/' +id,{
             'user_id': $rootScope.currentUser.user_id,
-            'comments':comments,
-            'outlet_id': outlet_id
+            'outlet_id': outlet_id,
+			'type':2
 
         }).success(function(data, status, headers, config) {
             //$scope.showConfirm = function() {
 
-            var confirmPopup = $ionicPopup.confirm({
-                title: 'Stock Requested',
-                template: 'Product requested Successfully. Proceed to Gallery.',
-                cancelText: 'No',
-                okText: 'Ok',
-            });
+              });
+        }else{
+            //check if passed id is in db and delete
+        }
 
-            confirmPopup.then(function(res) {
-                if(res) {
-                    $state.go('app.gallery', {'outlet_id':outlet_id, 'name':name});
-                } else {
-                    $scope.showspiner = false;
-                    $scope.pos.code = "";
-                    $scope.searched_product.name = "";
-                    $scope.searched_product.category.name = "";
-                    $scope.pos.comments = "";
-                }
-            });
-
-            //console.log(data);
-
-        }).error(function(data, status) {
-            //$scope.errors = data.errors;
-            $scope.showspiner = false;
-        });
     }
 
-   }
-    $scope.testfunc = function (code){
-        $http.get('http://sparkcommunication.websandbox.nl/api/pos_search_product/' +code)
-            .success(function(data, status, headers, config) {
-                $scope.searched_product = data.searched_product;
-                if(!$scope.searched_product){
-                    $scope.search_results = false;
-                    //$scope.pos.name = $scope.searched_product.name;
-                }else{
-                    $scope.search_results = true;
-                }
-
-            }).error(function(data, status) {
-            //$scope.errors = data.errors;
-        });
+    $scope.notcheck = function (id) {
+        console.log('notchecked');
     }
-    $scope.$watch('pos.code', function(newValue, oldValue) {
-        var code = $scope.pos.code;
-        $scope.testfunc(code);
 
-    });
+    console.log('Stock Request Page ' + $state.params.outlet_id);
+    console.log('Stock Request Page ' + name );
+
 
     })
 
@@ -737,56 +844,10 @@ $scope.outlets = [];
 
     });
 
-/*
 
-$scope.outletss = [{
-    "outlet_id": 1,
-    "outletName":'Nakumatt Ukay',
-    "lat":-1.29,
-    "visited":0,
-},
-    {
-     "outlet_id":2,
-     "outletName":'Tuskys Westlands',
-        "lat":-1.29,
-      "visited":1,
-    },
-    {
-        "outlet_id": 3,
-        "outletName":'Chandaria Umoja',
-        "lat":-1.28,
-        "visited":0,
-    },
-    {
-        "outlet_id": 4,
-        "outletName":'Khetias Langata',
-        "lat":-1.28,
-        "visited":1,
-    },{
-        "outlet_id": 10,
-        "outletName":'Total Rubia',
-        "lat":-1.28,
-        "visited":1,
-    }, {
-        "outlet_id": 11,
-        "outletName":'Ukwala Gikomba',
-        "lat":-1.28,
-        "visited":1,
-    }, {
-        "outlet_id": 12,
-        "outletName":'Tuskys Kisumu',
-        "lat":-1.29,
-        "visited":1,
-    }, {
-        "outlet_id": 14,
-        "outletName":'Uchumi Valley Arcade',
-        "lat":-1.29,
-        "visited":1,
-    }];
-    */
 
     $scope.out = function (id, name, lat) {
-        $state.go('app.pos', {"outlet_id":id, "name":name, "lat":lat});
+        $state.go('app.grid', {"outlet_id":id, "name":name, "lat":lat});
 
     }
 
@@ -950,9 +1011,6 @@ $scope.outletss = [{
                 if(res) {
 
 
-
-
-
                 } else {
                     $ionicPopup.alert({
                            title: 'Not running',
@@ -983,5 +1041,4 @@ $scope.outletss = [{
             });
         };
     })
-
 
