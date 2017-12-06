@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget id="com.spark.communication" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.spark.communication" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>Spark Communication</name>
   <description>
         Spark Communication
     </description>
   <author email="kiplangatdan@gmail.com" href="http://ionicframework.com/">
-      Kiplangat Dan
+      Kiplangat Dan, Moses Shitote
     </author>
   <content src="index.html"/>
   <access origin="*"/>
